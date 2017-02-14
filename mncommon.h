@@ -16,3 +16,6 @@ typedef struct {
 
 typedef dcomplexe DCOMP [VEC_SIZE] ;
 
+enum MNCBLAS_LAYOUT {CblasColMajor, CblasRowMajor};
+
+

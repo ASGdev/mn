@@ -1,11 +1,11 @@
 Lukla
 - AXPY
-- BLAS 2
+- BLAS 3
 
 
 Susu
 - dot 
-
+- BLAS 2
 
 ============
 DOC INTEL : https://software.intel.com/en-us/node/520724

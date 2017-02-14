@@ -3,8 +3,8 @@
  int main(){
      return 0;
  }
-enum MNCBLAS_LAYOUT MNCBLAS_LAYOUTe;
-void mncblas_sgemv (MNCBLAS_LAYOUTe layout){
+
+void mncblas_sgemv (MNCBLAS_LAYOUT layout){
 }
 
 

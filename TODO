@@ -1,0 +1,37 @@
+Lukla
+- AXPY
+- BLAS 2
+
+
+Susu
+- dot 
+
+
+============
+DOC INTEL : https://software.intel.com/en-us/node/520724
+============
+
+-----------------
+- Mise en place des mesures de performance
+- "link" avec fonctions de test
+
+------------------
+
+Vecteurs [flottants, double] -> scalaires, complexe [simple, double précision]
+
+6 routines à écrire + 4 exemplaires (pour les 4 types de données)
+
+env. 10 lignes / routine
+
+! Mesure des performances + comparaison avec le BLAS
+
+-> calculer FLOPS PC théorique
+-> comparer avec puissance effective
+
+Niveau 1
+--------
+
+COPY, SWAP, DOT, AXPY
+-> COPY et SWAP : perf en débit binaire (volume donnée / temps)
+
+Niveau 2

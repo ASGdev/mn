@@ -19,4 +19,5 @@ typedef dcomplexe DCOMP [VEC_SIZE] ;
 enum _MNCBLAS_LAYOUT {CblasColMajor, CblasRowMajor};
 typedef enum _MNCBLAS_LAYOUT MNCBLAS_LAYOUT;
 
-
+enum _MNCBLAS_TRANSPOSE {true, false};
+typedef enum _MNCBLAS_TRANSPOSE MNCBLAS_TRANSPOSE;

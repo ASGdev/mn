@@ -1,4 +1,4 @@
-#include "mnblas.h"
+//#include "mnblas.h"
 
 void cblas_saxpy (const int N, const float A, const float *X, const int incX, float *Y, const int incY){
 
@@ -41,7 +41,7 @@ void cblas_caxpy (const int N, const void *A, const void *X, const int incX, voi
                 reel = reel - (A * XP[i] + YP[j]);
             }
         else{
-          imag = imag + (A * x[i] + y[j]); 
+          imag = imag + (A * x[i] + y[j]);
         }
     }
 
@@ -64,7 +64,7 @@ void cblas_zaxpy (const int N, const void *A, const void *X, const int incX, voi
                 reel = reel - (A * XP[i] + YP[j]);
             }
         else{
-          imag = imag + (A * x[i] + y[j]); 
+          imag = imag + (A * x[i] + y[j]);
         }
     }
 

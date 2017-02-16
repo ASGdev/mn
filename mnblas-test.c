@@ -1,13 +1,20 @@
-/* Tests unitaires pour MNBLAS */
+/* Tests pour MNBLAS */
 /* DE ARAUJO Bastien, SURIER GAROFALO Aurélien <aurelien.surier@gmail.com> */
 
 #include <stdio.h>
 #include "mncommon.h"
+#include "vars.h"
+#include "mnblas.h"
 #define N 4
+#define VEC_SIZE 4
+#define VECSIZE 4
+
 
 int dumpVector();
 int dumpMatrix();
 int testType();
+void fillVectors();
+void generateRandom();
 
 enum Type {s, d, c, z};
 enum Type t;
@@ -22,79 +29,29 @@ int main(){
     writeFile = 0;
   }
 
-  ////////////// BLAS 1 ////////////////
-  // Copy
-  // init V1
-  // copie de V1 vers V2 simple
-  //V2 = mnblas_copy(V1, )
+    ////////////// BLAS 1 ////////////////
+    // Copy
+    VFLOAT vec2 ;
+
+    //VFLOAT
+    // copie de V1 vers V2 simple
+    mncblas_scopy(4, vec1, 1, vec2, 1);
+    dumpVector(vec2, N, s);
 
   // copie de V1 vers V2 avec incrément X=1, Y=1
-
   // copie de V1 vers V2 avec incrément de X tq incX > X -> doit retourner X (fallback à 1)
 
-  float tabs[4] = {1.23,2.34,3.45,4.56};
-  double tabd[4] = {1.11,2.22,3.33,4.44};
-  //float tabc[4] = {1.23,2.34,3.45,4.56};
-  //float tabz[4] = {1.23,2.34,3.45,4.56};
-  //V1[0] = 1.1; V1[1] = 2.2; V1[2] = 3.3 ; V1[3] = 4.4;
+    ////////////// BLAS 2 ////////////////
+    VFLOAT vec3, vec4;
+    MFLOAT mat1;
+    float alpha = 1.0;
+    float beta = 1.0;
+    mncblas_sgemv(101, 111, VECSIZE, VECSIZE, alpha, mat1, VECSIZE, vec1, 1, beta, vec2, 1);
+    dumpVector(vec4, N, s);
 
-  dumpVector(tabs, N, s);
-  dumpVector(tabd, N, d);
-
-  DCOMP V1;
-
-  /***** Construct complex vector ****/
-
-  V1[0].REEL = 1.0;
-  V1[0].IMAG = 1.1;
-  V1[1].REEL = 2.0;
-  V1[1].IMAG = 2.2;
-  V1[2].REEL = 3.0;
-  V1[2].IMAG = 3.3;
-  V1[3].REEL = 4.0;
-  V1[3].IMAG = 4.4;
-
-    dumpVector(V1, N, z);
-
-  /***************/
+    ////////////// BLAS 2 ////////////////
 
 
-  /***** Construction matrice ****/
-  // M = 4;
-  // N = 4;
-
-  float M[4][4];
-  M[0][0] = 0;
-  M[0][1] = 0;
-  M[0][2] = 0;
-  M[0][3] = 0;
-  M[1][0] = 1;
-  M[1][1] = 1;
-  M[1][2] = 1;
-  M[1][3] = 1;
-  M[2][0] = 2;
-  M[2][1] = 2;
-  M[2][2] = 2;
-  M[2][3] = 2;
-  M[3][0] = 3;
-  M[3][1] = 3;
-  M[3][2] = 3;
-  M[3][3] = 3;
-
-
-dumpMatrix(M, 4, s);
-
-
-  /********************************/
-
-  ////////////// BLAS 2 ////////////////
-
-
-  //dumpMatrix();
-
-  ////////////// BLAS 3 ////////////////
-
-  //dumpMatrix();
 
   return 0;
 }
@@ -165,3 +122,41 @@ int testType(enum Type t){
     printf("type is no");
   }
 }
+
+void fillVectors(){
+    vecteurCF1[0].REEL = 1.0; vecteurCF1[0].IMAG = 1.1;
+  vecteurCF1[1].REEL = 2.0;  vecteurCF1[1].IMAG = 2.2;
+  vecteurCF1[2].REEL = 3.0;vecteurCF1[2].IMAG = 3.3;
+  vecteurCF1[3].REEL = 4.0;vecteurCF1[3].IMAG = 4.4;
+
+  vecteurCD1[0].REEL = 1.0;vecteurCD1[0].IMAG = 1.1;
+  vecteurCD1[1].REEL = 2.0;vecteurCD1[1].IMAG = 2.2;
+  vecteurCD1[2].REEL = 3.0;vecteurCD1[2].IMAG = 3.3;
+  vecteurCD1[3].REEL = 4.0;vecteurCD1[3].IMAG = 4.4;
+}
+
+void vector_init (VFLOAT V, float x){
+
+  register unsigned int i ;
+
+  for (i = 0; i < VECSIZE; i++)
+    V [i] = x ;
+
+  return ;
+}
+
+void matrixInit(MFLOAT V, float x){
+    register unsigned int i ;
+    register unsigned int j;
+
+  for (i = 0; i < VECSIZE; i++){
+    for (j = 0; j < VECSIZE; j++){
+        V [i] = x ;
+    }
+  }
+}
+
+//void generateRandom(void* container, type t, int h){
+//    srand ( time ( NULL));
+//    random_value = (double)rand();
+//}

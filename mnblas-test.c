@@ -1,6 +1,7 @@
 /* Tests pour MNBLAS */
 /* DE ARAUJO Bastien, SURIER GAROFALO Aurélien <aurelien.surier@gmail.com> */
 
+#include <gsl/gsl_cblas.h>
 #include <stdio.h>
 #include "mncommon.h"
 #include "vars.h"
@@ -30,31 +31,70 @@ int main(){
   }
 
     ////////////// BLAS 1 ////////////////
-    // Copy
     VFLOAT vec2 ;
+    dumpVector(vec1, N, s);
 
+    // COPY
     //VFLOAT
     // copie de V1 vers V2 simple
     mncblas_scopy(4, vec1, 1, vec2, 1);
-    dumpVector(vec2, N, s);
+    // dumpVector(vec2, N, s);
 
   // copie de V1 vers V2 avec incrément X=1, Y=1
   // copie de V1 vers V2 avec incrément de X tq incX > X -> doit retourner X (fallback à 1)
+    
+    // DOT
+    printf("\n");
+    float resultat = mncblas_sdot(VECSIZE, vec1, 1, vec2, 1);
+    printf("%f \n", resultat);
+
+    printf("\n");
+    resultat = cblas_sdot(VECSIZE, vec1, 1, vec2, 1);
+    printf("%f \n", resultat);
+
+    // SWAP
+    // mncblas_sswap(VECSIZE, vec2, 1, vec3, 1);
+    // dumpVector(vec2, N, s);
+    // dumpVector(vec3, N, s);
+
+    // SAXPY
+    cblas_scopy(4,vec2, 1, vec3, 1);
+
+    mncblas_saxpy(VECSIZE, 2, vec1, 1, vec2, 1);
+    dumpVector(vec2, N, s);
+
+    cblas_saxpy(VECSIZE, 2, vec1, 1, vec3, 1);
+    dumpVector(vec3, N, s);
 
     ////////////// BLAS 2 ////////////////
     VFLOAT vec3, vec4;
-    MFLOAT mat0;
+    
     float alpha = 1.0;
     float beta = 1.0;
     //mncblas_sgemv(101, 111, VECSIZE, VECSIZE, alpha, mat1, VECSIZE, vec1, 1, beta, vec2, 1);
     //dumpVector(vec4, N, s);
 
     ////////////// BLAS 3 ////////////////
-    MFLOAT mat1, mat2, mat3;
+    float *p1 = &mat1[0][0];
+    float *p2 = &mat2[0][0];
+    float *p3 = &mat3[0][0];
+
     float alphaa = 1.0;
     float betaa = 1.0;
-    mncblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, mat1, VECSIZE, mat2, VECSIZE, betaa, mat3, VECSIZE);
-    dumpMatrix(mat3, VECSIZE, s);
+
+    // mncblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
+    // dumpMatrix(p3, VECSIZE, s);
+
+    cblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1 , VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
+    // dumpMatrix(p3, VECSIZE, s);
+    dumpVector(vec2, N, s);
+
+    cblas_sgemv(101, 111, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, vec1, 1, betaa, vec2, 1);
+    dumpVector(vec2, N, s);
+
+    mncblas_sgemv(101, 111, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, vec1, 1, betaa, vec2, 1);
+    dumpVector(vec2, N, s);
+
 
   return 0;
 }
@@ -148,16 +188,16 @@ void vector_init (VFLOAT V, float x){
   return ;
 }
 
-void matrixInit(MFLOAT V, float x){
-    register unsigned int i ;
-    register unsigned int j;
+// void matrixInit(MFLOAT V, float x){
+//     register unsigned int i ;
+//     register unsigned int j;
 
-  for (i = 0; i < VECSIZE; i++){
-    for (j = 0; j < VECSIZE; j++){
-        V [i] = x ;
-    }
-  }
-}
+//   for (i = 0; i < VECSIZE; i++){
+//     for (j = 0; j < VECSIZE; j++){
+//         V[i][j] = x ;
+//     }
+//   }
+// }
 
 //void generateRandom(void* container, type t, int h){
 //    srand ( time ( NULL));

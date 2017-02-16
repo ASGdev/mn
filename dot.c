@@ -25,67 +25,90 @@ double mncblas_ddot(const int N, const double *X, const int incX, const double *
 }
 
 void mncblas_cdotu_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotu){
-  /* complex non conjugué */
+  register unsigned int i = 0 ;
+  register unsigned int j = 0 ;
+  float *XP = (float *)X;
+  float *YP = (float *)Y;
+  register float re;
+  register float im;
 
-    register unsigned int i = 0 ;
-    register unsigned int j = 0 ;
-
-    float *XP = (float *) X;
-    float *YP = (float *) Y;
-
-    register float dotR = 0.0 ;
-    register float dotI = 0.0;
-    for (; ((i < N*2) && (j < N*2)) ; i += incX, j+=incY){
-        dotR = dotR + ((XP[i]*YP[j])-(XP[i+1]*YP[j+1]));
-        dotI = dotI + ((XP[i]*YP[j+1])+(XP[i+1]*YP[j]));
+  for (; ((i < N) && (j < N)) ; i += incX, j+=incY){
+    if((i+j)%2==1){
+      if(i%2==0)
+        re = re + (XP[i] * YP[j]);
+      else
+        re = re - (XP[i] * YP[j]);
+      }
+    else{
+      im = im + XP[i] * YP[j]; 
     }
-
-    dcomplexe R;
-    R.REEL = dotR;
-    R.IMAG = dotI;
-    *((dcomplexe*)dotu) = R;
-    return ;
+  }
 }
 
-void   mncblas_cdotc_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotc){
+void  mncblas_cdotc_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotc){
+  register unsigned int i = 0 ;
+  register unsigned int j = 0 ;
+  float *XP = (float *)X;
+  float *YP = (float *)Y;
+  register float re;
+  register float im;
 
-    register unsigned int i = 0 ;
-    register unsigned int j = 0 ;
-
-    float *XP = (float *) X;
-    float *YP = (float *) Y;
-
-    register float dotR = 0.0 ;
-    register float dotI = 0.0;
-    for (; ((i < N*2) && (j < N*2)) ; i += incX, j+=incY){
-        dotR = dotR + ((XP[i]*YP[i])-(XP[i+1]*YP[j+1]));
-        dotI = dotI + ((XP[i]*YP[j+1])+(XP[i+1]*YP[i]));
+  for (; ((i < N) && (j < N)) ; i += incX, j+=incY){
+    if((i+j)%2==1){
+      re = re + (XP[i] * YP[j]);
     }
-
-    dcomplexe R;
-    R.REEL = dotR;
-    R.IMAG = dotI;
-    *((dcomplexe*)dotu) = R;
-    return ;
-}
-  /* a completer conjugué */
-
-    return ;
+    else{
+      if(i%2==0)
+        im = im + (XP[i] * YP[j]);
+      else
+        im = im - XP[i] * YP[j];
+    }
+  }
 }
 
-void   mncblas_zdotu_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotu){
-  /* a completer */
+void  mncblas_zdotu_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotu){
+  register unsigned int i = 0 ;
+  register unsigned int j = 0 ;
+  double *XP = (double *)X;
+  double *YP = (double *)Y;
+  register double re;
+  register double im;
 
-    return ;
+  for (; ((i < N) && (j < N)) ; i += incX, j+=incY)
+  {
+    if((i+j)%2==1){
+      if(i%2==0)
+        re = re + (XP[i] * YP[j]);
+      else
+        re = re - XP[i] * YP[j];
+    }
+    else{
+      im = im + XP[i] * YP[j]; 
+    }
+  }
 }
-
+  
 void   mncblas_zdotc_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotc){
-  /* a completer */
+  register unsigned int i = 0 ;
+  register unsigned int j = 0 ;
+  double *XP = (double *)X;
+  double *YP = (double *)Y;
+  register double re;
+  register double im;
 
-    return ;
+  for (; ((i < N) && (j < N)) ; i += incX, j+=incY){
+    if((i+j)%2==1){
+      re = re + (XP[i] * YP[j]);
+    }
+    else{
+      if(i%2==0)
+        im = im + (XP[i] * YP[j]);
+      else
+        im = im - XP[i] * YP[j];
+    }
+  }
 }
 
 
-int main(){
-}
+
 

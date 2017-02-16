@@ -43,15 +43,18 @@ int main(){
 
     ////////////// BLAS 2 ////////////////
     VFLOAT vec3, vec4;
-    MFLOAT mat1;
+    MFLOAT mat0;
     float alpha = 1.0;
     float beta = 1.0;
-    mncblas_sgemv(101, 111, VECSIZE, VECSIZE, alpha, mat1, VECSIZE, vec1, 1, beta, vec2, 1);
-    dumpVector(vec4, N, s);
+    //mncblas_sgemv(101, 111, VECSIZE, VECSIZE, alpha, mat1, VECSIZE, vec1, 1, beta, vec2, 1);
+    //dumpVector(vec4, N, s);
 
-    ////////////// BLAS 2 ////////////////
-
-
+    ////////////// BLAS 3 ////////////////
+    MFLOAT mat1, mat2, mat3;
+    float alphaa = 1.0;
+    float betaa = 1.0;
+    mncblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, mat1, VECSIZE, mat2, VECSIZE, betaa, mat3, VECSIZE);
+    dumpMatrix(mat3, VECSIZE, s);
 
   return 0;
 }

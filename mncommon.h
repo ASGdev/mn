@@ -1,7 +1,7 @@
 #define VEC_SIZE 4
 
 typedef float VFLOAT [VEC_SIZE] ;
-typedef float MFLOAT [VEC_SIZE] ;
+typedef float MFLOAT [VEC_SIZE][VEC_SIZE] ;
 
 typedef double vdouble [VEC_SIZE];
 typedef double vdouble [VEC_SIZE];

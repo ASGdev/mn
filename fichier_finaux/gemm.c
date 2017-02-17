@@ -1,6 +1,8 @@
+#include <stdio.h>
+
 #include "mnblas.h"
 
-
+int dumpMatrix();
 
 void mncblas_sgemm(MNCBLAS_LAYOUT layout, MNCBLAS_TRANSPOSE TransA,
                  MNCBLAS_TRANSPOSE TransB, const int M, const int N,
@@ -11,27 +13,33 @@ void mncblas_sgemm(MNCBLAS_LAYOUT layout, MNCBLAS_TRANSPOSE TransA,
 	register unsigned int i = 0 ;
     register unsigned int j = 0 ;
     register unsigned int k = 0 ;
-    float *gemm;
+    register unsigned int z = 0 ;
 
-    for(; i<N; i++){
-    	gemm[i] = 0;
-    }
+    float gemmm[N][N];
 
-    i = 0;
+    float *gemm = &gemmm[0][0];
+    // for(; i<N; i++){
+    // 	gemm[i] = 0;
+    // }
+
+    // i = 0;
 
     for(;k < N; k++){
 	    for(; j < N; j++){
 		    for(; (i < N); i++){
-		    	// gemm[j+k*N] =  gemm[j+k*N] + alpha * A[i] * B[i*N+j];
+		    	*(gemm+(j+k*N)) =  *(gemm+(j+k*N)) + alpha * A[i] * B[i*N+j];
 		    }
 	    }
     }
-	
-	for(; i < N*N; i++){
-	// 	gemm[i] = gemm[i] + beta * C[i];
+    printf("ESSAYYYYYYY\n");
+    dumpMatrix(gemm, N*N);
+    // i = 0;	
+	for(; z < N*N; z++){
+		*(gemm+z) = *(gemm+z) + beta * C[z];
+		// *gemm[z] = *gemm[z] + beta * C[z];
 	}
 
-	// *C = *gemm;
+	*C = *gemm;
 }
 
 void mncblas_dgemm(MNCBLAS_LAYOUT layout, MNCBLAS_TRANSPOSE TransA,
@@ -172,4 +180,25 @@ void mncblas_zgemm(MNCBLAS_LAYOUT layout, MNCBLAS_TRANSPOSE TransA,
 	}
 
 	// *c = *gemm;
+}
+
+
+
+
+int dumpMatrix(void *matrix, int l){
+//    if (t != d || t != c || t != z || t != s){
+//        printf("[ERROR] Parameter t (type) not valid !");
+//        return 1;
+//    }
+
+//Matrix[M][N];
+  register int i = 0;
+  register int y = 0;
+  for(int y = 0; y<l*l ; y++){
+       
+   
+        
+        printf(" %f \n", ((float*)matrix)[y]);
+  }
+  return 0;
 }

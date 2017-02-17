@@ -12,7 +12,7 @@
 
 
 int dumpVector();
-int dumpMatrix();
+//int //dumpMatrix();
 int testType();
 void fillVectors();
 void generateRandom();
@@ -21,14 +21,14 @@ enum Type {s, d, c, z};
 enum Type t;
 
 int main(){
-  printf("=== MNBLAS : TESTS ===\n");
-  int writeFile = 1;
-  FILE *fp;
-  fp = fopen("mnblaslog", "w+");
-  if(fp == NULL){
-    printf("[ERROR] Unable to open file to write...\n");
-    writeFile = 0;
-  }
+    printf("=== MNBLAS : TESTS ===\n");
+    int writeFile = 1;
+    FILE *fp;
+    fp = fopen("mnblaslog", "w+");
+    if(fp == NULL){
+        printf("[ERROR] Unable to open file to write...\n");
+        writeFile = 0;
+    }
 
     ////////////// BLAS 1 ////////////////
     VFLOAT vec2 ;
@@ -151,11 +151,15 @@ int main(){
     float betaa = 1.0;
 
     // GEMM //
-    // mncblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
-    // dumpMatrix(p3, VECSIZE, s);
+    printf("GEMM Vecteur mncblas\n");
+    mncblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
+    //dumpMatrix(p3, VECSIZE, s);
+    printf("\n");
 
-    // cblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1 , VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
-    // dumpMatrix(p3, VECSIZE, s);
+    printf("GEMM Vecteur cblas\n");
+    cblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1 , VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
+    //dumpMatrix(p3, VECSIZE, s);
+    printf("\n");
 
     // GEMV //
     // Vecteur de base
@@ -230,37 +234,37 @@ int dumpVector(void *vectr, int l, enum Type t){
   return 0;
 }
 
-int dumpMatrix(void *matrix, int l, enum Type t){
-//    if (t != d || t != c || t != z || t != s){
-//        printf("[ERROR] Parameter t (type) not valid !");
-//        return 1;
-//    }
+// int //dumpMatrix(void *matrix, int l, enum Type t){
+// //    if (t != d || t != c || t != z || t != s){
+// //        printf("[ERROR] Parameter t (type) not valid !");
+// //        return 1;
+// //    }
 
-//Matrix[M][N];
-  register int i = 0;
-  register int y = 0;
-  if( t == c || t == z) l=l*2;
-  for(int y = 0; y<l*l ; y++){
-        if ((y % N) == 0){
-            printf("\n");
-        }
-        if (t == s){
-            printf(" %f ", ((float*)matrix)[y]);
-        } else if(t == d){
-            printf(" %f ", ((double*)matrix)[y]);
-        } //else if(t == c){
-//            printf(" (%f,", ((float*)matrix)[i+y]);
-//            printf("%f) ", ((float*)matrix)[(++i)+y]);
-//        } else {
-//            printf(" (%f,", ((double*)matrix)[y+i]);
-//            printf("%f) ", ((double*)matrix)[(++i) + y]);
-//        }
+// //Matrix[M][N];
+//   register int i = 0;
+//   register int y = 0;
+//   if( t == c || t == z) l=l*2;
+//   for(int y = 0; y<l*l ; y++){
+//         if ((y % N) == 0){
+//             printf("\n");
+//         }
+//         if (t == s){
+//             printf(" %f ", ((float*)matrix)[y]);
+//         } else if(t == d){
+//             printf(" %f ", ((double*)matrix)[y]);
+//         } //else if(t == c){
+// //            printf(" (%f,", ((float*)matrix)[i+y]);
+// //            printf("%f) ", ((float*)matrix)[(++i)+y]);
+// //        } else {
+// //            printf(" (%f,", ((double*)matrix)[y+i]);
+// //            printf("%f) ", ((double*)matrix)[(++i) + y]);
+// //        }
 
 
-    //printf(" ]\n");
-  }
-  return 0;
-}
+//     //printf(" ]\n");
+//   }
+//   return 0;
+// }
 
 int testType(enum Type t){
     if(t == s){

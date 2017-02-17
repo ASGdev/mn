@@ -32,40 +32,108 @@ int main(){
 
     ////////////// BLAS 1 ////////////////
     VFLOAT vec2 ;
+    vdouble vecd3;
+    printf("Vecteur de base \n");
     dumpVector(vec1, N, s);
+    printf("\n");
 
-    // COPY
+    // COPY //
     //VFLOAT
     // copie de V1 vers V2 simple
+    printf("COPY Vecteur mncblas \n");
     mncblas_scopy(4, vec1, 1, vec2, 1);
-    // dumpVector(vec2, N, s);
+    dumpVector(vec2, N, s);
+    printf("\n");
+
+    printf("COPY Vecteur cblas \n");
+    cblas_scopy(4, vec1, 1, vec2, 1);
+    dumpVector(vec2, N, s);
+    printf("\n");
+
+
+    // copie de V1 vers V2 double
+    printf("COPY Vecteur mncblas double\n");
+    mncblas_dcopy(4, vecd1, 1, vecd3, 1);
+    dumpVector(vecd3, N, s);
+    printf("\n");
+
+    printf("COPY Vecteur cblas double\n");
+    cblas_dcopy(4, vecd1, 1, vecd3, 1);
+    dumpVector(vecd3, N, s);
+    printf("\n");
 
   // copie de V1 vers V2 avec incrément X=1, Y=1
   // copie de V1 vers V2 avec incrément de X tq incX > X -> doit retourner X (fallback à 1)
     
-    // DOT
-    printf("\n");
+    // DOT //
+    // simple
+    printf("DOT Vecteur mncblas \n");
     float resultat = mncblas_sdot(VECSIZE, vec1, 1, vec2, 1);
     printf("%f \n", resultat);
-
     printf("\n");
+
+    printf("DOT Vecteur cblas \n");
     resultat = cblas_sdot(VECSIZE, vec1, 1, vec2, 1);
     printf("%f \n", resultat);
+    printf("\n");
+    // double
+    printf("DOT Vecteur mncblas double\n");
+    resultat = mncblas_ddot(VECSIZE, vecd1, 1, vecd3, 1);
+    printf("%f \n", resultat);
+    printf("\n");
 
-    // SWAP
-    // mncblas_sswap(VECSIZE, vec2, 1, vec3, 1);
-    // dumpVector(vec2, N, s);
-    // dumpVector(vec3, N, s);
+    printf("DOT Vecteur cblas double\n");
+    resultat = cblas_ddot(VECSIZE, vecd1, 1, vecd3, 1);
+    printf("%f \n", resultat);
+    printf("\n");
 
-    // SAXPY
+    // SWAP //
+    // simple
+    printf("SWAP Vecteur mncblas \n");
+    printf("initial\n");
+    dumpVector(vec2, N, s);
+    dumpVector(vec3, N, s);
+    mncblas_sswap(VECSIZE, vec2, 1, vec3, 1);
+    printf("Swapé\n");
+    dumpVector(vec2, N, s);
+    dumpVector(vec3, N, s);
+    printf("\n");
+
+    // double
+    printf("SWAP Vecteur mnblas double\n");
+    printf("initial\n");
+    dumpVector(vecd3, N, s);
+    dumpVector(vecd2, N, s);
+    mncblas_dswap(VECSIZE, vecd3, 1, vecd2, 1);
+    printf("swapé\n");
+    dumpVector(vecd3, N, s);
+    dumpVector(vecd2, N, s);
+    printf("\n");
+
+    // SAXPY //
+    // simple
     cblas_scopy(4,vec2, 1, vec3, 1);
-
+    printf("AXPY Vecteur mncblas \n");
     mncblas_saxpy(VECSIZE, 2, vec1, 1, vec2, 1);
     dumpVector(vec2, N, s);
+    printf("\n");
 
+    printf("AXPY Vecteur cblas \n");
     cblas_saxpy(VECSIZE, 2, vec1, 1, vec3, 1);
     dumpVector(vec3, N, s);
+    printf("\n");
 
+    // double
+    cblas_dcopy(4,vecd3, 1, vecd2, 1);
+    printf("AXPY Vecteur mncblas double\n");
+    mncblas_daxpy(VECSIZE, 2, vecd1, 1, vecd3, 1);
+    dumpVector(vecd3, N, s);
+    printf("\n");
+
+    printf("AXPY Vecteur cblas double\n");
+    cblas_daxpy(VECSIZE, 2, vecd1, 1, vecd3, 1);
+    dumpVector(vecd3, N, s);
+    printf("\n");
     ////////////// BLAS 2 ////////////////
     VFLOAT vec3, vec4;
     
@@ -82,19 +150,62 @@ int main(){
     float alphaa = 1.0;
     float betaa = 1.0;
 
+    // GEMM //
     // mncblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
     // dumpMatrix(p3, VECSIZE, s);
 
-    cblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1 , VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
+    // cblas_sgemm(101, 111, 111, VECSIZE, VECSIZE, VECSIZE, alphaa, p1 , VECSIZE, p2, VECSIZE, betaa, p3, VECSIZE);
     // dumpMatrix(p3, VECSIZE, s);
-    dumpVector(vec2, N, s);
 
+    // GEMV //
+    // Vecteur de base
+    printf("Vecteur de départ \n");
+    dumpVector(vec2, N, s);
+    printf("\n");
+    // simple
+    printf("GEMV Vecteur cblas\n");
     cblas_sgemv(101, 111, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, vec1, 1, betaa, vec2, 1);
     dumpVector(vec2, N, s);
-
+    printf("\n");
+    
+    printf("GEMV Vecteur mncblas\n");
     mncblas_sgemv(101, 111, VECSIZE, VECSIZE, alphaa, p1, VECSIZE, vec1, 1, betaa, vec2, 1);
     dumpVector(vec2, N, s);
+    printf("\n");
 
+
+
+
+    // double
+
+    // VFLOAT vecd3, vecd4;
+    
+    double alphad = 1.0;
+    double betad = 1.0;
+    //mncblas_dgemv(101, 111, VECSIZE, VECSIZE, alpha, mat1, VECSIZE, vec1, 1, beta, vec2, 1);
+    //dumpVector(vec4, N, s);
+
+    ////////////// BLAS 3 ////////////////
+    double *p1d = &matd1[0][0];
+    double *p2d = &matd2[0][0];
+    double *p3d = &matd3[0][0];
+
+    double alphaad = 1.0;
+    double betaad = 1.0;
+
+    printf("Vecteur de départ double\n");
+    dumpVector(vecd3, N, s);
+    printf("\n");
+
+    printf("GEMV Vecteur cblas double\n");
+    cblas_dgemv(101, 111, VECSIZE, VECSIZE, alphaad, p1d, VECSIZE, vecd1, 1, betaad, vecd3, 1);
+    dumpVector(vecd3, N, s);
+    printf("\n");
+    
+    printf("GEMV Vecteur mncblas double\n");
+    mncblas_dgemv(101, 111, VECSIZE, VECSIZE, alphaad, p1d, VECSIZE, vecd1, 1, betaad, vecd3, 1);
+    dumpVector(vecd3, N, s);
+    printf("\n");
 
   return 0;
 }
